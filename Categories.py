@@ -44,4 +44,4 @@ class Three_of_a_kind(Category):
             self.score = 0
             return
 
-        self.score = np.sum(dice, where=(dice == self.candidate_number))
+        self.score = np.sum(dice)

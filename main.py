@@ -1,5 +1,5 @@
 import sys
-from Roll import Roll
+from Player import Player
 
 def help():
     return '''
@@ -17,8 +17,9 @@ def main(args):
         print(help())
     elif args[0] == 'auto':
         iterations = int(args[1]) if len(args) > 1 else 1
-        round = Roll()
-        round.roll_all()
+        for i in range(iterations):
+            tmp_player = Player(i)
+            tmp_player.make_roll()
     elif args[0] == 'manual':
         players = int(args[1]) if len(args) > 1 else 1
 

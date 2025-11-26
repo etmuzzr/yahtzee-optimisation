@@ -1,5 +1,7 @@
+from Roll import Roll
+
 class Player:
-    def __init__(self, player_number):
+    def __init__(self, player_number, base_rerolls=2):
         self.scores = {
             'ones': 0,
             'twos': 0,
@@ -18,6 +20,10 @@ class Player:
 
         self.player_number = player_number
         self.total_score = 0
+        self.base_rerolls = base_rerolls
+        self.cur_rerolls = base_rerolls
+
+        self.roller = Roll()
 
     def calculate_total_score(self):
         self.total_score = sum(self.scores.values())
@@ -27,3 +33,6 @@ class Player:
             raise ValueError(f'Invalid category: {category}')
 
         self.scores[category] = score
+
+    def make_roll(self):
+        self.roller.roll_all()

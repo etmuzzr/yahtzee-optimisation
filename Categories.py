@@ -1,17 +1,18 @@
 import numpy as np
+from helper import get_probability_matrices
 
 class Category:
-    def __init__(self, name, num_dice):
+    def __init__(self, name, num_dice, num_sides):
         self.satisfied = False
         self.has_category = False
         self.probability = 0.0
         self.score = 0
-        self.candidate_number = 0
+        self.num_dice = num_dice
+        self.num_sides = num_sides
         self.reroll_mask = np.zeros(num_dice, dtype=int)
-
         self.name = name
 
-    def print_category(self):
+    def print(self):
         if self.satisfied: return
         print(f'Category: {self.name} \n Has Category: {self.has_category} \n Probability: {self.probability} \n Score: {self.score}\n')
 
@@ -19,13 +20,12 @@ class Category:
         self.satisfied = True
 
 class Three_of_a_kind(Category):
-    def __init__(self, num_dice=5):
-        super().__init__('Three of a Kind', num_dice)
+    def __init__(self, num_dice=5, num_sides=6):
+        super().__init__('three_of_a_kind', num_dice, num_sides)
 
     def check_category(self, dice):
         counts = np.bincount(dice)
         self.has_category = np.any(counts >= 3)
-        self.candidate_number = np.argmax(counts) if self.has_category else 0
 
     def get_reroll_locations(self, dice):
         if self.has_category:
@@ -35,9 +35,17 @@ class Three_of_a_kind(Category):
         likely_candidate = np.argmax(counts)
         self.reroll_mask = np.where(dice == likely_candidate, 0, 1)
 
-    def probability(self, dice):
-        #Calculate the number of dice to be rerolled for three-of-a-kind
-        pass
+    def find_probability(self, dice, rerolls_remaining):
+        if self.has_category:
+            self.probability = 1.0
+            return
+
+        matrix_one_roll, matrix_two_rolls = get_probability_matrices(self.num_dice, self.num_sides)
+        prob_matrix = matrix_one_roll
+
+        self.get_reroll_locations(dice)
+        i = self.num_dice - np.sum(self.reroll_mask)
+        self.probability = np.sum(prob_matrix[i-1, 2:])
 
     def get_score(self, dice):
         if not self.has_category:

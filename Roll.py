@@ -13,6 +13,11 @@ class Roll:
 
     def roll_all(self):
         self.dice = np.random.randint(1, self.sides + 1, size=self.num_dice)
+        print(self.dice)
+        self.categories['three_of_a_kind'].check_category(self.dice)
+        self.categories['three_of_a_kind'].find_probability(self.dice, rerolls_remaining=2)
+        self.categories['three_of_a_kind'].get_score(self.dice)
+        self.categories['three_of_a_kind'].print()
 
     def roll_selected(self, indices_mask):
         if np.sum(indices_mask) == self.num_dice:

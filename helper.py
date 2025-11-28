@@ -17,8 +17,7 @@ def get_probability_matrices(num_dice=6, num_sides=5):
                 C = math.comb(n, k) # number of ways to choose k from n (binomial coefficient
                 matrix1[i-1,j-1] = C * (p ** k) * ((1 - p) ** (n - k))
 
-    # for two rolls (we can just multiply the matrix by itself)
-    matrix2 = matrix1 ** 2
+    # for two rolls
+    matrix2 = np.matmul(matrix1, matrix1)
 
-    print(matrix1)
     return matrix1, matrix2

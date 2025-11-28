@@ -14,7 +14,7 @@ class Category:
 
     def print(self):
         if self.satisfied: return
-        print(f'Category: {self.name} \n Has Category: {self.has_category} \n Probability: {self.probability} \n Score: {self.score}\n')
+        print(f'Category: {self.name} \nHas Category: {self.has_category} \nProbability: {self.probability} \nScore: {self.score}\n')
 
     def choose(self):
         self.satisfied = True
@@ -41,7 +41,7 @@ class Three_of_a_kind(Category):
             return
 
         matrix_one_roll, matrix_two_rolls = get_probability_matrices(self.num_dice, self.num_sides)
-        prob_matrix = matrix_one_roll
+        prob_matrix = matrix_one_roll if rerolls_remaining == 1 else matrix_two_rolls
 
         self.get_reroll_locations(dice)
         i = self.num_dice - np.sum(self.reroll_mask)

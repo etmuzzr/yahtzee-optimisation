@@ -16,7 +16,8 @@ class Roll:
         print(self.dice)
         self.categories['three_of_a_kind'].check_category(self.dice)
         self.categories['three_of_a_kind'].find_probability(self.dice, rerolls_remaining=2)
-        self.categories['three_of_a_kind'].get_score(self.dice)
+        self.categories['three_of_a_kind'].find_score(self.dice)
+        self.categories['three_of_a_kind'].find_weight()
         self.categories['three_of_a_kind'].print()
 
     def roll_selected(self, indices_mask):

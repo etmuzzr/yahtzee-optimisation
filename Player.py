@@ -1,7 +1,7 @@
 from Roll import Roll
 
 class Player:
-    def __init__(self, player_number, base_rerolls=2):
+    def __init__(self, player_number):
         self.scores = {
             'ones': 0,
             'twos': 0,
@@ -20,8 +20,8 @@ class Player:
 
         self.player_number = player_number
         self.total_score = 0
-        self.base_rerolls = base_rerolls
-        self.cur_rerolls = base_rerolls
+        self.base_rerolls = 2
+        self.cur_rerolls = self.base_rerolls
 
         self.roller = Roll()
 

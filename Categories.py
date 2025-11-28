@@ -6,6 +6,7 @@ class Category:
         self.satisfied = False
         self.has_category = False
         self.probability = 0.0
+        self.weight = 0.0
         self.score = 0
         self.num_dice = num_dice
         self.num_sides = num_sides
@@ -14,7 +15,7 @@ class Category:
 
     def print(self):
         if self.satisfied: return
-        print(f'Category: {self.name} \nHas Category: {self.has_category} \nProbability: {self.probability} \nScore: {self.score}\n')
+        print(f'Category: {self.name} \nHas Category: {self.has_category} \nProbability: {self.probability} \nDecision Weight: {self.weight} \nScore: {self.score}\n')
 
     def choose(self):
         self.satisfied = True
@@ -45,11 +46,14 @@ class Three_of_a_kind(Category):
 
         self.get_reroll_locations(dice)
         i = self.num_dice - np.sum(self.reroll_mask)
+        # the probability of going from i matching dice to 3-5 matching dice
         self.probability = np.sum(prob_matrix[i-1, 2:])
 
-    def get_score(self, dice):
-        if not self.has_category:
-            self.score = 0
-            return
+    # the decision weight for a category (calculated with our probability, current score and expected category score)
+    def find_weight(self):
+        max_score = 30
+        self.weight = self.probability * (self.score / max_score)
 
+    # plausible score for the category (even if the dice doesn't contain the conditions)
+    def find_score(self, dice):
         self.score = np.sum(dice)
